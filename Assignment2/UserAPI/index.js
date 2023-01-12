@@ -79,6 +79,27 @@ app.delete('/api/users/:uid', (request, response) => {
         response.send("User Deleted Succesfully....")
     })
 })
+
+
+//PATCH Method
+//Update USER DATA
+app.patch('/api/users/:uid', (request, response) => {
+    let user={
+        uid:parseInt(request.params.uid),
+        // uname:request.body.uname,
+        email:request.body.email,
+        // salary:request.body.salary
+    }
+
+    let dataset={
+        $set:user
+    }
+    database.collection('users').updateOne({uid : parseInt(request.params.uid)},dataset,(error,result)=>{
+        if(error) response.status(500).send(error)
+        response.send("Data Updated successfully... By PATCH()")
+    })
+
+})
 app.listen(1234, () => {
     MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true }, (error, result) => {
         if (error)
